@@ -1,0 +1,3 @@
+# Create a Tournament
+POST http://{{host}}:{{port}}/tournaments/{{$uuid}}
+content-type: "application-json"
