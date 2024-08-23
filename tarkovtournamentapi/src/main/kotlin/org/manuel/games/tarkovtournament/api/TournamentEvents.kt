@@ -10,3 +10,5 @@ class RaidCompletedEvent(
     val player: String,
     val raid: Raid
 )
+
+data class TournamentFinishedEvent(val id: UUID)

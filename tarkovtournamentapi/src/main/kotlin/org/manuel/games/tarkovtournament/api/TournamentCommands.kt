@@ -18,3 +18,10 @@ data class RaidCompleteCommand(
     val player: String,
     val raid: Raid,
 )  // end::RaidCompleteCommand[]
+
+// CreateTournamentCommand Creates a tournament
+// tag::FinishTournamentCommand[]
+data class FinishTournamentCommand(
+    @TargetAggregateIdentifier val id: UUID,
+)
+// end::FinishTournamentCommand
