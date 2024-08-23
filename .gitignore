@@ -6,8 +6,7 @@ build/
 !**/src/test/**/build/
 
 /AxonServer/AxonIQ.pid
-/AxonServer/data/_diagnostics
-/AxonServer/data/default
+/AxonServer/data/
 /AxonServer/log
 
 ### STS ###

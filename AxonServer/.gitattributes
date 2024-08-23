@@ -1,0 +1,4 @@
+AxonServer/axonserver.jar filter=lfs diff=lfs merge=lfs -text
+AxonServer/axonserver-cli.jar filter=lfs diff=lfs merge=lfs -text
+AxonServer/axonserver-migration.jar filter=lfs diff=lfs merge=lfs -text
+AxonServer/extensions/axon-server-extensions*.zip filter=lfs diff=lfs merge=lfs -text
