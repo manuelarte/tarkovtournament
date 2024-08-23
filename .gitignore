@@ -8,6 +8,7 @@ build/
 /AxonServer/AxonIQ.pid
 /AxonServer/data/
 /AxonServer/log
+/AxonServer/plugins/cache/*
 
 ### STS ###
 .apt_generated
