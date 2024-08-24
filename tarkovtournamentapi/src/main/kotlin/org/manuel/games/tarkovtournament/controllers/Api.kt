@@ -20,7 +20,13 @@ class TournamentCommandController(private val commandGateway: CommandGateway, pr
     fun createTournament(@PathVariable id: UUID): Mono<ResponseEntity<TournamentCreatedResponseDto>> {
         val command = CreateTournamentCommand(id)
         return Mono.fromFuture<TournamentCreatedResponseDto>(commandGateway.send(command))
-            .then(Mono.just<ResponseEntity<TournamentCreatedResponseDto>>(ResponseEntity.ok(TournamentCreatedSuccessfulResponse(id))))
+            .then(
+                Mono.just<ResponseEntity<TournamentCreatedResponseDto>>(
+                    ResponseEntity.ok(
+                        TournamentCreatedSuccessfulResponse(id)
+                    )
+                )
+            )
             .onErrorResume { t -> Mono.just(ResponseEntity.badRequest().body(TournamentCreatedException(t.message!!))) }
             .timeout(5.seconds.toJavaDuration())
     }
@@ -29,8 +35,18 @@ class TournamentCommandController(private val commandGateway: CommandGateway, pr
     fun finishTournament(@PathVariable id: UUID): Mono<ResponseEntity<TournamentFinishedResponseDto>> {
         val command = FinishTournamentCommand(id)
         return Mono.fromFuture<TournamentCreatedResponseDto>(commandGateway.send(command))
-            .then(Mono.just<ResponseEntity<TournamentFinishedResponseDto>>(ResponseEntity.ok(TournamentFinishedSuccessfulResponse(id))))
-            .onErrorResume { t -> Mono.just(ResponseEntity.badRequest().body(TournamentFinishedException(t.message!!))) }
+            .then(
+                Mono.just<ResponseEntity<TournamentFinishedResponseDto>>(
+                    ResponseEntity.ok(
+                        TournamentFinishedSuccessfulResponse(id)
+                    )
+                )
+            )
+            .onErrorResume { t ->
+                Mono.just(
+                    ResponseEntity.badRequest().body(TournamentFinishedException(t.message!!))
+                )
+            }
             .timeout(5.seconds.toJavaDuration())
     }
 

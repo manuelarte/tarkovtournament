@@ -24,7 +24,7 @@ class TournamentTest {
     fun testRaidCompleteCommand() {
         val tournamentId = UUID.randomUUID()
         val player = "manuelarte"
-        val raid = Raid(null, listOf())
+        val raid = Raid("12345", listOf())
         fixture.given(TournamentCreatedEvent(tournamentId))
             .`when`(RaidCompleteCommand(tournamentId, player, raid))
             .expectSuccessfulHandlerExecution()
