@@ -8,6 +8,7 @@ import java.util.UUID
 // tag::CreateTournamentCommand[]
 data class CreateTournamentCommand(
     @TargetAggregateIdentifier val id: UUID,
+    val createdBy: String,
 ) // end::CreateTournamentCommand[]
 
 // RaidCompleteCommand Raid complete for a player in a tournament

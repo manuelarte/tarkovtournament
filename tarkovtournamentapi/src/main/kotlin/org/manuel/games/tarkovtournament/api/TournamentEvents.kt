@@ -3,7 +3,7 @@ package org.manuel.games.tarkovtournament.api
 import org.manuel.games.tarkovtournament.models.Raid
 import java.util.UUID
 
-class TournamentCreatedEvent(val id: UUID)
+class TournamentCreatedEvent(val id: UUID, val createdBy: String)
 
 class RaidCompletedEvent(
     val tournamentId: UUID,

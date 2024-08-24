@@ -20,6 +20,7 @@ import java.util.UUID
 class Tournament {
     @AggregateIdentifier
     private lateinit var id: UUID
+    private lateinit var createdBy: String
     private var playersTournament: MutableMap<String, PlayerTournament> = mutableMapOf()
     private var isFinished = false
 
@@ -27,7 +28,7 @@ class Tournament {
     // tag::CreateTournamentCommand[]
     @CommandHandler
     constructor(command: CreateTournamentCommand) {
-        AggregateLifecycle.apply(TournamentCreatedEvent(command.id))
+        AggregateLifecycle.apply(TournamentCreatedEvent(command.id, command.createdBy))
     }
     // end::CreateTournamentCommand[]
 
@@ -36,7 +37,6 @@ class Tournament {
     @CommandHandler
     fun handle(command: RaidCompleteCommand) {
         require(command.player.isNotEmpty()) { "no player name given" }
-        // TODO validate that the raid is not already present
         AggregateLifecycle.apply(RaidCompletedEvent(command.tournamentId, command.player, command.raid))
     }
     // tag::RaidCompleteCommand[]
@@ -50,6 +50,7 @@ class Tournament {
     @EventSourcingHandler
     fun on(event: TournamentCreatedEvent) {
         this.id = event.id
+        this.createdBy = event.createdBy
         // rules
     }
 
