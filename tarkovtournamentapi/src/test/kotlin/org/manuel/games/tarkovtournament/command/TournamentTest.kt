@@ -6,13 +6,11 @@ import org.manuel.games.tarkovtournament.api.RaidCompleteCommand
 import org.manuel.games.tarkovtournament.api.RaidCompletedEvent
 import org.manuel.games.tarkovtournament.api.TournamentCreatedEvent
 import org.manuel.games.tarkovtournament.models.Raid
-import java.util.*
+import java.util.UUID
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
-
 class TournamentTest {
-
     private lateinit var fixture: FixtureConfiguration<Tournament>
 
     @BeforeTest
@@ -29,6 +27,5 @@ class TournamentTest {
             .`when`(RaidCompleteCommand(tournamentId, player, raid))
             .expectSuccessfulHandlerExecution()
             .expectEvents(RaidCompletedEvent(tournamentId, player, raid))
-
     }
 }

@@ -15,11 +15,13 @@ import java.util.concurrent.ConcurrentHashMap
 @Service
 @ProcessingGroup("tournament")
 class TournamentQueryProjector {
-
     private val tournamentReadModel: MutableMap<UUID, TournamentDto> = ConcurrentHashMap()
 
     @EventHandler
-    fun on(event: TournamentCreatedEvent, @Timestamp instant: Instant) {
+    fun on(
+        event: TournamentCreatedEvent,
+        @Timestamp instant: Instant,
+    ) {
         val tournament = TournamentDto(event.id, instant, true)
         tournamentReadModel[event.id] = tournament
     }
@@ -28,5 +30,4 @@ class TournamentQueryProjector {
     fun handle(query: TournamentsQuery): TournamentsResponse {
         return TournamentsResponse(tournamentReadModel.values.filter { t -> t.active == query.active })
     }
-
 }

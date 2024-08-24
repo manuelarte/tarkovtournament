@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class TarkovTournamentApplication
 
 fun main(args: Array<String>) {
-	runApplication<TarkovTournamentApplication>(*args)
+    runApplication<TarkovTournamentApplication>(*args)
 }

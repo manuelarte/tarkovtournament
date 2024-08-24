@@ -28,11 +28,16 @@ class AxonConfig {
         ConfigurerModule {
         override fun configureModule(configurer: Configurer) {
             configurer.eventProcessing { processingConfigurer: EventProcessingConfigurer ->
-                processingConfigurer.registerDefaultHandlerInterceptor { config: org.axonframework.config.Configuration?, processorName: String? -> loggingInterceptor }
+                processingConfigurer.registerDefaultHandlerInterceptor {
+                        config: org.axonframework.config.Configuration?,
+                        processorName: String?,
+                    ->
+                    loggingInterceptor
+                }
             }
                 .onInitialize { config: org.axonframework.config.Configuration ->
                     this.registerInterceptorForBusses(
-                        config
+                        config,
                     )
                 }
         }
@@ -49,16 +54,18 @@ class AxonConfig {
          * @param config The [org.axonframework.config.Configuration] to retrieve the infrastructure components
          * from.
          */
-        // We do not require to handle the returned Registration object.
         private fun registerInterceptorForBusses(config: org.axonframework.config.Configuration) {
-            config.onStart(Phase.INSTRUCTION_COMPONENTS + 1, Runnable {
-                config.commandBus().registerHandlerInterceptor(loggingInterceptor)
-                config.commandBus().registerDispatchInterceptor(loggingInterceptor)
-                config.eventBus().registerDispatchInterceptor(loggingInterceptor)
-                config.queryBus().registerHandlerInterceptor(loggingInterceptor)
-                config.queryBus().registerDispatchInterceptor(loggingInterceptor)
-                config.queryUpdateEmitter().registerDispatchInterceptor(loggingInterceptor)
-            })
+            config.onStart(
+                Phase.INSTRUCTION_COMPONENTS + 1,
+                Runnable {
+                    config.commandBus().registerHandlerInterceptor(loggingInterceptor)
+                    config.commandBus().registerDispatchInterceptor(loggingInterceptor)
+                    config.eventBus().registerDispatchInterceptor(loggingInterceptor)
+                    config.queryBus().registerHandlerInterceptor(loggingInterceptor)
+                    config.queryBus().registerDispatchInterceptor(loggingInterceptor)
+                    config.queryUpdateEmitter().registerDispatchInterceptor(loggingInterceptor)
+                },
+            )
         }
     }
 }

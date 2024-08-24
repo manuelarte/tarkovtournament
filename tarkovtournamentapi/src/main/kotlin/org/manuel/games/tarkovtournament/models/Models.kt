@@ -1,6 +1,6 @@
 package org.manuel.games.tarkovtournament.models
 
-import java.util.*
+import java.util.Objects
 import kotlin.time.Duration
 
 /**
@@ -11,7 +11,7 @@ data class Raid(
     /** The id of the Raid, normally in a format like YCUQK8 */
     val id: String,
     /** The kills done in that raid */
-    val kills: Collection<Kill>
+    val kills: Collection<Kill>,
 ) {
     fun indexKills(): Map<Int, Kill> {
         return this.kills.associateBy { it.number }
@@ -65,11 +65,9 @@ data class Kill(
         result = 31 * result + (distance?.hashCode() ?: 0)
         return result
     }
-
 }
 
 class PlayerTournament {
-
     val raids: MutableCollection<Raid> = mutableListOf()
 
     fun addRaid(raid: Raid) {
@@ -84,7 +82,6 @@ class PlayerTournament {
         } else {
             raids.add(raid)
         }
-
     }
 
     override fun equals(other: Any?): Boolean {
@@ -99,6 +96,4 @@ class PlayerTournament {
     override fun hashCode(): Int {
         return Objects.hash(raids)
     }
-
-
 }

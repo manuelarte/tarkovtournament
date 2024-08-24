@@ -8,7 +8,7 @@ class TournamentCreatedEvent(val id: UUID)
 class RaidCompletedEvent(
     val tournamentId: UUID,
     val player: String,
-    val raid: Raid
+    val raid: Raid,
 )
 
 data class TournamentFinishedEvent(val id: UUID)

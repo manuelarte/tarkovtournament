@@ -15,43 +15,48 @@ import kotlin.time.toJavaDuration
 @RequestMapping("tournaments/")
 @Profile("api")
 class TournamentCommandController(private val commandGateway: CommandGateway, private val queryGateway: QueryGateway) {
-
     @PostMapping("/{id}")
-    fun createTournament(@PathVariable id: UUID): Mono<ResponseEntity<TournamentCreatedResponseDto>> {
+    fun createTournament(
+        @PathVariable id: UUID,
+    ): Mono<ResponseEntity<TournamentCreatedResponseDto>> {
         val command = CreateTournamentCommand(id)
         return Mono.fromFuture<TournamentCreatedResponseDto>(commandGateway.send(command))
             .then(
                 Mono.just<ResponseEntity<TournamentCreatedResponseDto>>(
                     ResponseEntity.ok(
-                        TournamentCreatedSuccessfulResponse(id)
-                    )
-                )
+                        TournamentCreatedSuccessfulResponse(id),
+                    ),
+                ),
             )
             .onErrorResume { t -> Mono.just(ResponseEntity.badRequest().body(TournamentCreatedException(t.message!!))) }
             .timeout(5.seconds.toJavaDuration())
     }
 
     @DeleteMapping("/{id}")
-    fun finishTournament(@PathVariable id: UUID): Mono<ResponseEntity<TournamentFinishedResponseDto>> {
+    fun finishTournament(
+        @PathVariable id: UUID,
+    ): Mono<ResponseEntity<TournamentFinishedResponseDto>> {
         val command = FinishTournamentCommand(id)
         return Mono.fromFuture<TournamentCreatedResponseDto>(commandGateway.send(command))
             .then(
                 Mono.just<ResponseEntity<TournamentFinishedResponseDto>>(
                     ResponseEntity.ok(
-                        TournamentFinishedSuccessfulResponse(id)
-                    )
-                )
+                        TournamentFinishedSuccessfulResponse(id),
+                    ),
+                ),
             )
             .onErrorResume { t ->
                 Mono.just(
-                    ResponseEntity.badRequest().body(TournamentFinishedException(t.message!!))
+                    ResponseEntity.badRequest().body(TournamentFinishedException(t.message!!)),
                 )
             }
             .timeout(5.seconds.toJavaDuration())
     }
 
     @GetMapping
-    fun getActiveTournaments(@RequestParam(defaultValue = "true") active: Boolean): ResponseEntity<TournamentsResponse> {
+    fun getActiveTournaments(
+        @RequestParam(defaultValue = "true") active: Boolean,
+    ): ResponseEntity<TournamentsResponse> {
         val response = queryGateway.query(TournamentsQuery(active, 5), TournamentsResponse::class.java).get()
         return ResponseEntity.ok(response)
     }

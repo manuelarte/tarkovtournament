@@ -5,15 +5,19 @@ import org.axonframework.eventsourcing.EventSourcingHandler
 import org.axonframework.modelling.command.AggregateIdentifier
 import org.axonframework.modelling.command.AggregateLifecycle
 import org.axonframework.spring.stereotype.Aggregate
-import org.manuel.games.tarkovtournament.api.*
+import org.manuel.games.tarkovtournament.api.CreateTournamentCommand
+import org.manuel.games.tarkovtournament.api.FinishTournamentCommand
+import org.manuel.games.tarkovtournament.api.RaidCompleteCommand
+import org.manuel.games.tarkovtournament.api.RaidCompletedEvent
+import org.manuel.games.tarkovtournament.api.TournamentCreatedEvent
+import org.manuel.games.tarkovtournament.api.TournamentFinishedEvent
 import org.manuel.games.tarkovtournament.models.PlayerTournament
 import org.springframework.context.annotation.Profile
-import java.util.*
+import java.util.UUID
 
 @Profile("command")
 @Aggregate
 class Tournament {
-
     @AggregateIdentifier
     private lateinit var id: UUID
     private var playersTournament: MutableMap<String, PlayerTournament> = mutableMapOf()
@@ -51,7 +55,7 @@ class Tournament {
 
     @EventSourcingHandler
     fun on(event: RaidCompletedEvent) {
-        val playerTournament = this.playersTournament.getOrPut(event.player){PlayerTournament()}
+        val playerTournament = this.playersTournament.getOrPut(event.player) { PlayerTournament() }
         playerTournament.addRaid(event.raid)
     }
 
