@@ -19,7 +19,7 @@ class TournamentCommandController(private val commandGateway: CommandGateway, pr
     fun createTournament(
         @PathVariable id: UUID,
     ): Mono<ResponseEntity<TournamentCreatedResponseDto>> {
-        val command = CreateTournamentCommand(id)
+        val command = CreateTournamentCommand(id, "Manuelarte")
         return Mono.fromFuture<TournamentCreatedResponseDto>(commandGateway.send(command))
             .then(
                 Mono.just<ResponseEntity<TournamentCreatedResponseDto>>(
