@@ -8,7 +8,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "type",
-    defaultImpl = FactionKillRule::class)
+    defaultImpl = FactionKillRule::class,
+)
 @JsonSubTypes(
     JsonSubTypes.Type(value = FactionKillRule::class, name = "byFaction"),
 )
@@ -31,23 +32,30 @@ data class FactionKillRule(private val factions: Map<String, Double>, val defaul
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "type",
-    defaultImpl = KillingPointsRule::class)
+    defaultImpl = KillingPointsRule::class,
+)
 @JsonSubTypes(
     JsonSubTypes.Type(value = KillingPointsRule::class, name = "default"),
 )
 interface Rule {
     /** Applies the rule to the raids and returns the points after applying the rule */
-    fun apply(player: String, raids: Collection<Raid>): Double
+    fun apply(
+        player: String,
+        raids: Collection<Raid>,
+    ): Double
 }
 
 /** Rule to be applied to the kills */
-interface KillRule: Rule
+interface KillRule : Rule
 
 /** Default implementation for the KillRule */
 class KillingPointsRule(private val calculator: KillPointCalculator) : KillRule {
-    override fun apply(player: String, raids: Collection<Raid>): Double {
+    override fun apply(
+        player: String,
+        raids: Collection<Raid>,
+    ): Double {
         var points = 0.0
-        raids.forEach{ raid ->
+        raids.forEach { raid ->
             raid.kills.forEach { kill -> points += calculator.points(kill) }
         }
         return 0.0

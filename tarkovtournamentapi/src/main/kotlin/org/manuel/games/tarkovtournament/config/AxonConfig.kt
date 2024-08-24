@@ -29,8 +29,8 @@ class AxonConfig {
         override fun configureModule(configurer: Configurer) {
             configurer.eventProcessing { processingConfigurer: EventProcessingConfigurer ->
                 processingConfigurer.registerDefaultHandlerInterceptor {
-                        config: org.axonframework.config.Configuration?,
-                        processorName: String?,
+                        _: org.axonframework.config.Configuration?,
+                        _: String?,
                     ->
                     loggingInterceptor
                 }

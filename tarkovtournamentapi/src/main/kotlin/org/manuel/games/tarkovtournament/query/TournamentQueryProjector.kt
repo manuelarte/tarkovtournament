@@ -4,7 +4,10 @@ import org.axonframework.config.ProcessingGroup
 import org.axonframework.eventhandling.EventHandler
 import org.axonframework.eventhandling.Timestamp
 import org.axonframework.queryhandling.QueryHandler
-import org.manuel.games.tarkovtournament.api.*
+import org.manuel.games.tarkovtournament.api.TournamentCreatedEvent
+import org.manuel.games.tarkovtournament.api.TournamentDto
+import org.manuel.games.tarkovtournament.api.TournamentsQuery
+import org.manuel.games.tarkovtournament.api.TournamentsResponse
 import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Service
 import java.time.Instant
