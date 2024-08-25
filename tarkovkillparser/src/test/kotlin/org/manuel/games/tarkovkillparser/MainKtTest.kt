@@ -16,7 +16,7 @@ class MainKtTest {
         OpenCV.loadLocally()
         val bytes =
             this::class.java.classLoader
-                .getResource("image-many-kills.png")!!
+                .getResource("many-kills-en.png")!!
                 .readBytes()
         val img =
             Imgcodecs.imdecode(MatOfByte(*bytes), IMREAD_UNCHANGED)
@@ -30,7 +30,7 @@ class MainKtTest {
         OpenCV.loadLocally()
         val bytes =
             this::class.java.classLoader
-                .getResource("image-many-kills-2.png")!!
+                .getResource("many-kills-2-en.png")!!
                 .readBytes()
         val img =
             Imgcodecs.imdecode(MatOfByte(*bytes), IMREAD_UNCHANGED)
