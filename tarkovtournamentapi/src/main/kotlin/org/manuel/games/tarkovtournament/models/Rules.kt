@@ -18,7 +18,7 @@ interface KillPointCalculator {
 }
 
 /** Implementation for KillPointCalculator in which each faction receives different points */
-data class FactionKillRule(private val factions: Map<String, Double>, val defaultPoints: Double) : KillPointCalculator {
+data class FactionKillRule(val factions: Map<String, Double>, val defaultPoints: Double) : KillPointCalculator {
     override fun points(kill: Kill): Double {
         val key = kill.faction?.lowercase()
         return factions.getOrDefault(key, defaultPoints)

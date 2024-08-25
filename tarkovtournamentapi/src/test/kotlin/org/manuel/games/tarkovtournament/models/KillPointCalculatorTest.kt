@@ -4,7 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.json.JSONObject
-import kotlin.test.Ignore
+import org.skyscreamer.jsonassert.JSONAssert
+import org.skyscreamer.jsonassert.JSONCompareMode
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -30,7 +31,6 @@ class KillPointCalculatorTest {
     }
 
     @Test
-    @Ignore
     fun serializingTypeDefault() {
         val pointCalculator: KillPointCalculator =
             FactionKillRule(factions = mapOf(Pair("scav", 1.0), Pair("pmc", 2.0)), defaultPoints = 1.0)
@@ -46,6 +46,15 @@ class KillPointCalculatorTest {
                 it.put("defaultPoints", 1)
             }
         val actual = JSONObject(this.objectMapper.writeValueAsString(pointCalculator))
-        assertEquals(expected, actual)
+        JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT)
+    }
+
+    @Test
+    fun roundTrip() {
+        val pointCalculator: KillPointCalculator =
+            FactionKillRule(factions = mapOf(Pair("scav", 1.0), Pair("pmc", 2.0)), defaultPoints = 1.0)
+        val json = objectMapper.writeValueAsString(pointCalculator)
+        val myClassRoundTrip = objectMapper.readValue(json, KillPointCalculator::class.java)
+        assertEquals(pointCalculator, myClassRoundTrip)
     }
 }
