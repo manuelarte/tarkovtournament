@@ -1,15 +1,11 @@
 plugins {
-    kotlin("jvm") version "1.9.25"
-    id("pl.allegro.tech.build.axion-release") version "1.13.2"
-    id("org.jlleitschuh.gradle.ktlint") version "12.1.1"
+    kotlin("jvm")
+    id("pl.allegro.tech.build.axion-release")
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
-group = "org.manuel"
+group = "org.manuel.games"
 version = scmVersion.version
-
-repositories {
-    mavenCentral()
-}
 
 dependencies {
     implementation("org.openpnp:opencv:4.9.0-0")

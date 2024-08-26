@@ -1,10 +1,10 @@
 plugins {
-    kotlin("jvm") version "1.9.25"
+    kotlin("jvm")
     kotlin("plugin.spring") version "1.9.25"
     id("org.springframework.boot") version "3.3.3"
     id("io.spring.dependency-management") version "1.1.6"
-    id("pl.allegro.tech.build.axion-release") version "1.13.2"
-    id("org.jlleitschuh.gradle.ktlint") version "12.1.1"
+    id("pl.allegro.tech.build.axion-release")
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
 group = "org.manuel.games"
@@ -46,6 +46,8 @@ kotlin {
         freeCompilerArgs.addAll("-Xjsr305=strict")
     }
 }
+
+tasks.register("prepareKotlinBuildScriptModel") {}
 
 tasks.withType<Test> {
     useJUnitPlatform()
