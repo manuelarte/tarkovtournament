@@ -10,7 +10,7 @@ class KillScreenParserTest {
     @Test
     fun parseNoKillImage() {
         OpenCV.loadLocally()
-        val img = "no-kills_en_TRAINING_1440x2560.png".toResourceMat(this::class.java.classLoader, IMREAD_GRAYSCALE)
+        val img = "./en/no-kills_en_TRAINING_1440x2560.png".toResourceMat(this::class.java.classLoader, IMREAD_GRAYSCALE)
         val killScreenParser = KillScreenParser(img = img, ocrService = TesseractService("C:\\Program Files\\Tesseract-OCR\\tessdata"))
         val actual = killScreenParser.parse()
         val expected = PlayerKillRaidInfo(listOf(), RaidMetadata("0.15.0.2.32197", Version.BETA, "TRAINING"))

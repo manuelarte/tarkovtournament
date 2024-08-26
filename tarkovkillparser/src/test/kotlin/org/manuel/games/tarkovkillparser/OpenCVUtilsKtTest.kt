@@ -11,7 +11,7 @@ class OpenCVUtilsKtTest {
     fun cropImageNothing() {
         OpenCV.loadLocally()
         val img =
-            "many-kills_en.png".toResourceMat(this::class.java.classLoader, IMREAD_GRAYSCALE)
+            "./en/many-kills_en_FQXP5B.png".toResourceMat(this::class.java.classLoader, IMREAD_GRAYSCALE)
         val cropped = img.cropImage(.15, 0.75, .15, .85)
         assertEquals(((0.75 - 0.15) * img.height().toDouble()).toInt(), cropped.height())
         assertEquals(((0.85 - 0.15) * img.width().toDouble()).toInt(), cropped.width())
@@ -21,7 +21,7 @@ class OpenCVUtilsKtTest {
     fun cropNextBack() {
         OpenCV.loadLocally()
         val img =
-            "many-kills_en.png".toResourceMat(this::class.java.classLoader, IMREAD_GRAYSCALE)
+            "./en/many-kills_en_FQXP5B.png".toResourceMat(this::class.java.classLoader, IMREAD_GRAYSCALE)
         val top = .85
         val bottom = 1.0
         val left = .45

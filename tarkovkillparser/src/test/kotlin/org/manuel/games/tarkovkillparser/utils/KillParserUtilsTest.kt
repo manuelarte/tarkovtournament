@@ -16,26 +16,17 @@ import kotlin.test.assertTrue
 class KillParserUtilsTest {
 
     @Test
-    fun testIsKillImage() {
+    fun isKillImageImageWithKills() {
         OpenCV.loadLocally()
-        val img = "many-kills_en.png".toResourceMat(this::class.java.classLoader, IMREAD_UNCHANGED)
-        val dest = Mat()
-        Imgproc.cvtColor(img, dest, COLOR_BGR2GRAY)
+        val img = "./en/many-kills_en_FQXP5B.png".toResourceMat(this::class.java.classLoader, IMREAD_UNCHANGED)
+        val dest = Mat(). apply { Imgproc.cvtColor(img, this, COLOR_BGR2GRAY) }
         Imgcodecs.imwrite("resources/output.png", dest)
     }
 
     @Test
-    fun isKillImageItIs() {
+    fun isKillImageImageWithNoKills() {
         OpenCV.loadLocally()
-        val img = "many-kills-cropped_en.png".toResourceMat(this::class.java.classLoader, IMREAD_UNCHANGED)
-        val baseKillImage = Imgcodecs.imread("./src/main/resources/base-image-kill-parser.png")!!
-        assertTrue { isKillImage(baseKillImage, img) }
-    }
-
-    @Test
-    fun isKillImageItNoKills() {
-        OpenCV.loadLocally()
-        val img = "no-kills_en_TRAINING_1440x2560.png".toResourceMat(this::class.java.classLoader, IMREAD_UNCHANGED)
+        val img = "./en/no-kills_en_TRAINING_1440x2560.png".toResourceMat(this::class.java.classLoader, IMREAD_GRAYSCALE)
         val baseKillImage = Imgcodecs.imread("./src/main/resources/base-image-kill-parser.png")!!
         assertTrue { isKillImage(baseKillImage, img) }
     }
@@ -44,7 +35,7 @@ class KillParserUtilsTest {
     @Ignore("Test to show the image")
     fun cropNextBackImage() {
         OpenCV.loadLocally()
-        val img = "no-kills_en_TRAINING_1440x2560.png".toResourceMat(this::class.java.classLoader, IMREAD_GRAYSCALE)
+        val img = "en/no-kills_en_TRAINING_1440x2560.png".toResourceMat(this::class.java.classLoader, IMREAD_GRAYSCALE)
         val raidInfo = img.cropNextBack()
         HighGui.imshow("Next Back", raidInfo)
         HighGui.waitKey(0)
@@ -54,9 +45,35 @@ class KillParserUtilsTest {
     @Ignore("Test to show the image")
     fun cropRaidInfoImage() {
         OpenCV.loadLocally()
-        val img = "no-kills_en_TRAINING_1440x2560.png".toResourceMat(this::class.java.classLoader, IMREAD_GRAYSCALE)
+        val img = "en/no-kills_en_TRAINING_1440x2560.png".toResourceMat(this::class.java.classLoader, IMREAD_GRAYSCALE)
         val raidInfo = img.cropRaidMetadata()
         HighGui.imshow("Raid Info", raidInfo)
         HighGui.waitKey(0)
     }
+
+    @Test
+    @Ignore("Test to show the image")
+    fun cropPlayerKillInfoImage() {
+        OpenCV.loadLocally()
+        listOf("en/many-kills_en_FQXP5B.png", "en/no-kills_en_TRAINING_1440x2560.png", "es/some-kills_es_1440x2560.png").forEach {
+            val img = it.toResourceMat(this::class.java.classLoader, IMREAD_GRAYSCALE)
+            val playerKills = img.cropPlayerKillsInfo()
+            HighGui.imshow("Player Kills", playerKills)
+            HighGui.waitKey(0)
+            HighGui.destroyAllWindows()
+        }
+    }
+
+    @Test
+    // @Ignore("Test to create the base image for no kills")
+    fun createBaseImageNoKillsFromTest() {
+        OpenCV.loadLocally()
+        val img = "en/no-kills_en_TRAINING_1440x2560.png".toResourceMat(this::class.java.classLoader, IMREAD_GRAYSCALE)
+        val playerKills = img.cropPlayerKillsInfo()
+        HighGui.imshow("Player Kills", playerKills)
+        HighGui.waitKey(0)
+        HighGui.destroyAllWindows()
+        Imgcodecs.imwrite("base-image-no-kills.png", playerKills)
+    }
+
 }
