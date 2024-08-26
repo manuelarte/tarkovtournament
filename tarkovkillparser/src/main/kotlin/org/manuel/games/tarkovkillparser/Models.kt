@@ -1,6 +1,5 @@
 package org.manuel.games.tarkovkillparser
 
-import java.util.SortedSet
 import kotlin.time.Duration
 
 enum class Version(val n: String) {
