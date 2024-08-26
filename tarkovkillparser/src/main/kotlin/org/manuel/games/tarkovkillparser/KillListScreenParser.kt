@@ -12,9 +12,10 @@ import org.manuel.games.tarkovkillparser.utils.cropPlayerKillsTable
 import org.manuel.games.tarkovkillparser.utils.cropRaidMetadata
 import org.manuel.games.tarkovkillparser.utils.toBufferedImage
 import org.opencv.core.Mat
+import org.opencv.imgproc.Imgproc
 
 class KillListScreenParser(
-    /** Kill List Screenshot in Grayscale */
+    /** Kill list screenshot in Grayscale */
     private val img: Mat,
     private val ocrService: OcrService,
 ) {
@@ -29,18 +30,38 @@ class KillListScreenParser(
 
     fun parse(): PlayerKillRaidInfo {
         val raidMetadata = this.parseRaidMetadata()
-        val cropKillListByField = CropKillListByField(this.img.cropPlayerKillsTable())
+        val cropKillListByField = CropKillListByField(this.img.cropPlayerKillsTable().bitwiseNot())
+        val killList: List<PlayerKill> = mutableListOf()
         for (n in 1..9) {
             val killEntryImg = cropKillListByField.imgKillEntry(n)
-            KillEntryField.entries.forEach { field ->
-                val img = cropKillListByField.imgKillEntryForField(killEntryImg, field)
-                val output = this.ocrService.parseImg(img.toBufferedImage())
-                println("$n - $field: $output")
-            }
+            val time =
+                cropKillListByField
+                    .imgKillEntryForField(killEntryImg, KillEntryField.TIME)
+                    .let {
+                        val resizeImage = Mat(it.height() * 5, it.width() * 5, it.type())
+                        val interpolation = Imgproc.INTER_CUBIC
+                        Imgproc.resize(it, resizeImage, resizeImage.size(), 0.0, 0.0, interpolation)
+
+                        this.ocrService.parseNumberImg(resizeImage.toBufferedImage())
+                    }
+            if (time.isEmpty()) break
+            val fieldMap =
+                mutableMapOf<KillEntryField, String>().also {
+                    KillEntryField.entries.forEach { field ->
+                        val output =
+                            if (field == KillEntryField.NUMBER) {
+                                n.toString()
+                            } else {
+                                val croppedFieldImg = cropKillListByField.imgKillEntryForField(killEntryImg, field)
+                                this.ocrService.parseImg(croppedFieldImg.toBufferedImage())
+                            }
+                        it[field] = output
+                    }
+                }
+            PlayerKill.from(fieldMap)
         }
-        // parse raid id
-        // parse kills
-        return PlayerKillRaidInfo(listOf(), raidMetadata)
+
+        return PlayerKillRaidInfo(killList, raidMetadata)
     }
 
     private fun parseLang(): String {

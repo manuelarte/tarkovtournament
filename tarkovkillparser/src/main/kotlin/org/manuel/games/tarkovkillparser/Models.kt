@@ -1,5 +1,6 @@
 package org.manuel.games.tarkovkillparser
 
+import org.manuel.games.tarkovkillparser.utils.KillEntryField
 import kotlin.time.Duration
 
 enum class Version(
@@ -41,7 +42,12 @@ data class PlayerKill(
     val level: Int?,
     val faction: String?,
     val distance: Double?,
-)
+) {
+    companion object {
+        fun from(fieldMap: MutableMap<KillEntryField, String>) {
+        }
+    }
+}
 
 data class PlayerKillRaidInfo(
     private val kills: Collection<PlayerKill>,

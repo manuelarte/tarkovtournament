@@ -6,7 +6,6 @@ import org.opencv.imgcodecs.Imgcodecs.IMREAD_GRAYSCALE
 import kotlin.test.Test
 
 class KillListScreenParserTest {
-    // TODO it should returns no kills
     @Test
     fun parseNoKillImage() {
         OpenCV.loadLocally()
@@ -14,7 +13,7 @@ class KillListScreenParserTest {
         val killListScreenParser =
             KillListScreenParser(img = img, ocrService = TesseractService("C:\\Program Files\\Tesseract-OCR\\tessdata"))
         val actual = killListScreenParser.parse()
-        val expected = PlayerKillRaidInfo(listOf(), RaidMetadata("0.15.0.2.32197", Version.BETA, "TRAINING"))
+        val expected = PlayerKillRaidInfo(emptyList(), RaidMetadata("0.15.0.2.32197", Version.BETA, "TRAINING"))
         assertEquals(expected, actual)
     }
 

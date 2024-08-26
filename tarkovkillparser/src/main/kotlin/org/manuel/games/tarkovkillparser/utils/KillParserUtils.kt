@@ -9,7 +9,7 @@ import org.opencv.features2d.BFMatcher
 import org.opencv.features2d.ORB
 import org.opencv.imgcodecs.Imgcodecs
 
-private const val NUMBER_WIDTH: Double = 0.05
+private const val NUMBER_WIDTH: Double = 0.02
 private const val LOCATION_WIDTH: Double = 0.17
 private const val TIME_WIDTH: Double = 0.12
 private const val PLAYER_WIDTH: Double = 0.23
@@ -101,7 +101,7 @@ enum class KillEntryField(
     ;
 
     fun getLeftRoi(): Double {
-        if (this == NUMBER) return 0.0
+        if (this == NUMBER) return 0.03
         return this.previousField!!.width!! + this.previousField.getLeftRoi()
     }
 }

@@ -8,13 +8,13 @@ import org.opencv.imgcodecs.Imgcodecs.IMREAD_GRAYSCALE
 import kotlin.test.Ignore
 
 class CropKillListByFieldTest {
+    @Ignore("Test to be used to manually check the images")
     @Test
-    @Ignore
     fun parseKillEntryForFieldExample() {
         OpenCV.loadLocally()
-        val img = "en/many-kills_en_FOXP5SB.png".toResourceMat(this::class.java.classLoader, IMREAD_GRAYSCALE)
+        val img = "./en/many-kills_en_FOXP5SB.png".toResourceMat(this::class.java.classLoader, IMREAD_GRAYSCALE).bitwiseNot()
         val parser = CropKillListByField(img.cropPlayerKillsTable())
-        for (n in 1..2) {
+        for (n in 1..9) {
             KillEntryField.entries.forEach { field ->
                 val croppedImage = parser.imgKillEntry(n).let { parser.imgKillEntryForField(it, field) }
                 HighGui.imshow("$n - $field", croppedImage)
