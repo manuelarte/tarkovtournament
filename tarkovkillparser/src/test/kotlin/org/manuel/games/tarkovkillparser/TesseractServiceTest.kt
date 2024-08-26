@@ -8,7 +8,7 @@ import kotlin.test.Test
 class TesseractServiceTest {
     @Test
     fun nextBack() {
-        val instance = TesseractService()
+        val instance = TesseractService("C:\\Program Files\\Tesseract-OCR\\tessdata")
         val file =
             File(
                 this::class.java.classLoader

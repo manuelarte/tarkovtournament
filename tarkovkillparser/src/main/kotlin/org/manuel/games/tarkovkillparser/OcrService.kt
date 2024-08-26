@@ -6,13 +6,30 @@ import java.awt.image.BufferedImage
 
 interface OcrService {
     fun parseNextBack(image: BufferedImage): String
+
+    /**
+     * Parse the Raid metadata, the expecting results is something similar to @.15.0.2.32197 Beta version | QWRETY
+     */
+    fun parseRaidMetadata(image: BufferedImage): RaidMetadata
 }
 
-class TesseractService : OcrService {
+class TesseractService(val tessdataLocation: String) : OcrService {
     private val instance: ITesseract =
         Tesseract().also {
-            it.setDatapath("C:\\Program Files\\Tesseract-OCR\\tessdata")
+            it.setDatapath(tessdataLocation)
         }
 
-    override fun parseNextBack(image: BufferedImage): String = this.instance.doOCR(image)
+    override fun parseNextBack(image: BufferedImage): String = this.doOCR(image)
+
+    override fun parseRaidMetadata(image: BufferedImage): RaidMetadata {
+        return RaidMetadata.from(this.doOCR(image))
+    }
+
+    private fun doOCR(image: BufferedImage): String {
+        return this.instance.doOCR(image)
+    }
 }
+
+sealed class ParseKillException(message: String) : Exception(message)
+
+class ParseRaidMetadataException(ocrOutput: String, reason: String) : ParseKillException("Can't parse the raid info (ocrOutput: '$ocrOutput', reason: '$reason')")

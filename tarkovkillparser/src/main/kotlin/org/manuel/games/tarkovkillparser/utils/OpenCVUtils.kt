@@ -1,4 +1,4 @@
-package org.manuel.games.tarkovkillparser
+package org.manuel.games.tarkovkillparser.utils
 
 import org.opencv.core.Core
 import org.opencv.core.Mat
@@ -31,7 +31,8 @@ fun Mat.cropImage(
     val width = ((right - left) * this.cols()).toInt().coerceIn(1, this.width() - x)
     val height = ((bottom - top) * this.rows()).toInt().coerceIn(1, this.height() - y)
 
-    return Mat(this.clone(), Rect(x, y, width, height))
+    return Mat(this.clone(), Rect(x, y,
+        width, height))
 }
 
 fun Mat.bitwiseNot(): Mat {

@@ -7,6 +7,10 @@ plugins {
 group = "org.manuel.games"
 version = scmVersion.version
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     implementation("org.openpnp:opencv:4.9.0-0")
     implementation("com.github.pemistahl:lingua:1.2.2")

@@ -22,7 +22,7 @@ class MainKtTest {
     @Test
     fun isKillImageItIs() {
         OpenCV.loadLocally()
-        val img = "many-kills-2_en.png".toResourceMat(this::class.java.classLoader, IMREAD_UNCHANGED)
+        val img = "many-kills-cropped_en.png".toResourceMat(this::class.java.classLoader, IMREAD_UNCHANGED)
         val baseKillImage = Imgcodecs.imread("./src/main/resources/base-image-kill-parser.png")!!
         assertTrue { isKillImage(baseKillImage, img) }
     }
@@ -30,7 +30,7 @@ class MainKtTest {
     @Test
     fun isKillImageItNoKills() {
         OpenCV.loadLocally()
-        val img = "no-kills_en_1440x2560.png".toResourceMat(this::class.java.classLoader, IMREAD_UNCHANGED)
+        val img = "no-kills_en_TRAINING_1440x2560.png".toResourceMat(this::class.java.classLoader, IMREAD_UNCHANGED)
         val baseKillImage = Imgcodecs.imread("./src/main/resources/base-image-kill-parser.png")!!
         assertTrue { isKillImage(baseKillImage, img) }
     }

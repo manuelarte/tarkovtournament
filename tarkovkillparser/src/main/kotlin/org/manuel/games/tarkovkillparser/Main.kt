@@ -20,8 +20,3 @@ fun main() {
         println("i = $i")
     }
 }
-
-/**
- * TODO
- * - Detect lang using Next Back at the bottom
- */
