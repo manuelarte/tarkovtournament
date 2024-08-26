@@ -9,6 +9,13 @@ import org.opencv.features2d.BFMatcher
 import org.opencv.features2d.ORB
 import org.opencv.imgcodecs.Imgcodecs
 
+private const val NUMBER_WIDTH: Double = 0.05
+private const val LOCATION_WIDTH: Double = 0.17
+private const val TIME_WIDTH: Double = 0.12
+private const val PLAYER_WIDTH: Double = 0.23
+private const val LEVEL_WIDTH: Double = 0.04
+private const val FACTION_WIDTH: Double = 0.115
+
 fun isKillImage(
     baseImage: Mat = Imgcodecs.imread("./src/main/resources/base-image-kill-parser.png")!!,
     img: Mat,
@@ -80,19 +87,31 @@ fun Mat.cropPlayerKillsTable(): Mat {
     return this.cropImage(top, bottom, left, right)
 }
 
-class ParseKillList(
+enum class KillEntryField(
+    val width: Double?,
+    private val previousField: KillEntryField?,
+) {
+    NUMBER(NUMBER_WIDTH, null),
+    LOCATION(LOCATION_WIDTH, NUMBER),
+    TIME(TIME_WIDTH, LOCATION),
+    PLAYER(PLAYER_WIDTH, TIME),
+    LEVEL(LEVEL_WIDTH, PLAYER),
+    FACTION(FACTION_WIDTH, LEVEL),
+    STATUS(null, FACTION),
+    ;
+
+    fun getLeftRoi(): Double {
+        if (this == NUMBER) return 0.0
+        return this.previousField!!.width!! + this.previousField.getLeftRoi()
+    }
+}
+
+class CropKillListByField(
     /** Cropped image with the table kills */
     private val croppedImage: Mat,
 ) {
     /** Normalized Height of a kill entry */
     private val killHeight: Double = 0.1
-
-    private val numberWidth: Double = 0.05
-    private val locationWidth: Double = 0.17
-    private val timeWidth: Double = 0.12
-    private val playerWidth: Double = 0.23
-    private val levelWidth: Double = 0.04
-    private val factionWidth: Double = 0.115
 
     /**
      * Get the kill number n of the player kill list
@@ -102,33 +121,15 @@ class ParseKillList(
         return this.croppedImage.cropImage(n * this.killHeight, (n + 1) * this.killHeight, 0.0, 1.0)
     }
 
-    fun imgKillEntryLocation(killEntry: Mat): Mat {
-        val left = numberWidth
-        return killEntry.cropImage(0.0, 1.0, left, left + locationWidth)
-    }
-
-    fun imgKillEntryTime(killEntry: Mat): Mat {
-        val left = numberWidth + locationWidth
-        return killEntry.cropImage(0.0, 1.0, left, left + timeWidth)
-    }
-
-    fun imgKillEntryPlayer(killEntry: Mat): Mat {
-        val left = numberWidth + locationWidth + timeWidth
-        return killEntry.cropImage(0.0, 1.0, left, left + playerWidth)
-    }
-
-    fun imgKillEntryLevel(killEntry: Mat): Mat {
-        val left = numberWidth + locationWidth + timeWidth + playerWidth
-        return killEntry.cropImage(0.0, 1.0, left, left + levelWidth)
-    }
-
-    fun imgKillEntryFaction(killEntry: Mat): Mat {
-        val left = numberWidth + locationWidth + timeWidth + playerWidth + levelWidth
-        return killEntry.cropImage(0.0, 1.0, left, left + factionWidth)
-    }
-
-    fun imgKillEntryStatus(killEntry: Mat): Mat {
-        val left = numberWidth + locationWidth + timeWidth + playerWidth + levelWidth + factionWidth
-        return killEntry.cropImage(0.0, 1.0, left, 1.0)
+    /**
+     * Get the image cropped for the corresponding field for that kill entry img
+     */
+    fun imgKillEntryForField(
+        killEntry: Mat,
+        field: KillEntryField,
+    ): Mat {
+        val left = field.getLeftRoi()
+        val right = field.width?.let { left + it } ?: 1.0
+        return killEntry.cropImage(0.0, 1.0, left, right)
     }
 }
