@@ -12,7 +12,6 @@ import org.manuel.games.tarkovkillparser.utils.cropPlayerKillsTable
 import org.manuel.games.tarkovkillparser.utils.cropRaidMetadata
 import org.manuel.games.tarkovkillparser.utils.toBufferedImage
 import org.opencv.core.Mat
-import org.opencv.imgproc.Imgproc
 
 class KillListScreenParser(
     /** Kill list screenshot in Grayscale */
@@ -38,11 +37,7 @@ class KillListScreenParser(
                 cropKillListByField
                     .imgKillEntryForField(killEntryImg, KillEntryField.TIME)
                     .let {
-                        val resizeImage = Mat(it.height() * 5, it.width() * 5, it.type())
-                        val interpolation = Imgproc.INTER_CUBIC
-                        Imgproc.resize(it, resizeImage, resizeImage.size(), 0.0, 0.0, interpolation)
-
-                        this.ocrService.parseNumberImg(resizeImage.toBufferedImage())
+                        this.ocrService.parseImg(KillEntryField.TIME.transformation(it).toBufferedImage())
                     }
             if (time.isEmpty()) break
             val fieldMap =
@@ -53,7 +48,7 @@ class KillListScreenParser(
                                 n.toString()
                             } else {
                                 val croppedFieldImg = cropKillListByField.imgKillEntryForField(killEntryImg, field)
-                                this.ocrService.parseImg(croppedFieldImg.toBufferedImage())
+                                this.ocrService.parseImg(field.transformation(croppedFieldImg).toBufferedImage())
                             }
                         it[field] = output
                     }

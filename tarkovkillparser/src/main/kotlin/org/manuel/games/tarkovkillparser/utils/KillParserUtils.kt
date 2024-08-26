@@ -90,14 +90,20 @@ fun Mat.cropPlayerKillsTable(): Mat {
 enum class KillEntryField(
     val width: Double?,
     private val previousField: KillEntryField?,
+    val transformation: (m: Mat) -> Mat,
 ) {
-    NUMBER(NUMBER_WIDTH, null),
-    LOCATION(LOCATION_WIDTH, NUMBER),
-    TIME(TIME_WIDTH, LOCATION),
-    PLAYER(PLAYER_WIDTH, TIME),
-    LEVEL(LEVEL_WIDTH, PLAYER),
-    FACTION(FACTION_WIDTH, LEVEL),
-    STATUS(null, FACTION),
+    NUMBER(NUMBER_WIDTH, null, { it }),
+    LOCATION(LOCATION_WIDTH, NUMBER, { it }),
+    TIME(TIME_WIDTH, LOCATION, { it }),
+    PLAYER(PLAYER_WIDTH, TIME, {
+        val resizeImage = Mat()
+        org.opencv.imgproc.Imgproc
+            .resize(it.clone(), resizeImage, resizeImage.size(), 4.0, 4.0, org.opencv.imgproc.Imgproc.INTER_LINEAR_EXACT)
+        resizeImage
+    }),
+    LEVEL(LEVEL_WIDTH, PLAYER, { it }),
+    FACTION(FACTION_WIDTH, LEVEL, { it }),
+    STATUS(null, FACTION, { it }),
     ;
 
     fun getLeftRoi(): Double {
