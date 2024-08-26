@@ -17,7 +17,7 @@ class KillParserUtilsTest {
     @Test
     fun isKillImageImageWithKills() {
         OpenCV.loadLocally()
-        val img = "./en/many-kills_en_FQXP5B.png".toResourceMat(this::class.java.classLoader, IMREAD_UNCHANGED)
+        val img = "en/many-kills_en_FOXP5SB.png".toResourceMat(this::class.java.classLoader, IMREAD_UNCHANGED)
         val dest = Mat().apply { Imgproc.cvtColor(img, this, COLOR_BGR2GRAY) }
         Imgcodecs.imwrite("resources/output.png", dest)
     }
@@ -54,7 +54,7 @@ class KillParserUtilsTest {
     @Ignore("Test to show the image")
     fun cropPlayerKillInfoImage() {
         OpenCV.loadLocally()
-        listOf("en/many-kills_en_FQXP5B.png", "en/no-kills_en_TRAINING_1440x2560.png", "es/some-kills_es_1440x2560.png").forEach {
+        listOf("en/many-kills_en_FOXP5SB.png", "en/no-kills_en_TRAINING_1440x2560.png", "es/some-kills_es_1440x2560.png").forEach {
             val img = it.toResourceMat(this::class.java.classLoader, IMREAD_GRAYSCALE)
             val playerKills = img.cropPlayerKillsTable()
             HighGui.imshow("Player Kills", playerKills)

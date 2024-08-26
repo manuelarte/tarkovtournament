@@ -12,7 +12,7 @@ class CropKillListByFieldTest {
     @Ignore
     fun parseKillEntryForFieldExample() {
         OpenCV.loadLocally()
-        val img = "en/many-kills_en_FQXP5B.png".toResourceMat(this::class.java.classLoader, IMREAD_GRAYSCALE)
+        val img = "en/many-kills_en_FOXP5SB.png".toResourceMat(this::class.java.classLoader, IMREAD_GRAYSCALE)
         val parser = CropKillListByField(img.cropPlayerKillsTable())
         for (n in 1..2) {
             KillEntryField.entries.forEach { field ->

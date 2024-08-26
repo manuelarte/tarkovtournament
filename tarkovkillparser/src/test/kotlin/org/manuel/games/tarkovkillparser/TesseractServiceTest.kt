@@ -15,6 +15,6 @@ class TesseractServiceTest {
                     .getResource("ocr/next-back-original.png")!!
                     .toURI(),
             )
-        assertEquals("NEXT\nBACK\n", instance.parseNextBack(ImageIO.read(file)))
+        assertEquals("NEXT\nBACK\n", instance.parseImg(ImageIO.read(file)))
     }
 }

@@ -129,7 +129,7 @@ class CropKillListByField(
         field: KillEntryField,
     ): Mat {
         val left = field.getLeftRoi()
-        val right = field.width?.let { left + it } ?: 1.0
+        val right = field.width?.let { left + it } ?: (1.0 - 0.01)
         return killEntry.cropImage(0.0, 1.0, left, right)
     }
 }
