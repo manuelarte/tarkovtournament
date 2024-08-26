@@ -47,3 +47,16 @@ data class PlayerKillRaidInfo(
     private val kills: Collection<PlayerKill>,
     val metadata: RaidMetadata,
 )
+
+enum class Map {
+    GROUND_ZERO,
+    CUSTOMS,
+    WOODS,
+    FACTORY,
+    SHORELINE,
+    RESERVE,
+    INTERCHANGE,
+    LIGHTHOUSE,
+    STREETS_OF_TARKOV,
+    LABS,
+}

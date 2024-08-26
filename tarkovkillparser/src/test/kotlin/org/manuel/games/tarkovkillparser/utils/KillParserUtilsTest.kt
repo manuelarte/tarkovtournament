@@ -56,7 +56,7 @@ class KillParserUtilsTest {
         OpenCV.loadLocally()
         listOf("en/many-kills_en_FQXP5B.png", "en/no-kills_en_TRAINING_1440x2560.png", "es/some-kills_es_1440x2560.png").forEach {
             val img = it.toResourceMat(this::class.java.classLoader, IMREAD_GRAYSCALE)
-            val playerKills = img.cropPlayerKillsInfo()
+            val playerKills = img.cropPlayerKillsTable()
             HighGui.imshow("Player Kills", playerKills)
             HighGui.waitKey(0)
             HighGui.destroyAllWindows()
@@ -68,7 +68,7 @@ class KillParserUtilsTest {
     fun createBaseImageNoKillsFromTest() {
         OpenCV.loadLocally()
         val img = "en/no-kills_en_TRAINING_1440x2560.png".toResourceMat(this::class.java.classLoader, IMREAD_GRAYSCALE)
-        val playerKills = img.cropPlayerKillsInfo()
+        val playerKills = img.cropPlayerKillsTable()
         HighGui.imshow("Player Kills", playerKills)
         HighGui.waitKey(0)
         HighGui.destroyAllWindows()
