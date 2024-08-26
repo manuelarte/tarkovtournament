@@ -32,4 +32,6 @@ class TesseractService(val tessdataLocation: String) : OcrService {
 
 sealed class ParseKillException(message: String) : Exception(message)
 
-class ParseRaidMetadataException(ocrOutput: String, reason: String) : ParseKillException("Can't parse the raid info (ocrOutput: '$ocrOutput', reason: '$reason')")
+class ParseRaidMetadataException(ocrOutput: String, reason: String) : ParseKillException(
+    "Can't parse the raid info (ocrOutput: '$ocrOutput', reason: '$reason')",
+)

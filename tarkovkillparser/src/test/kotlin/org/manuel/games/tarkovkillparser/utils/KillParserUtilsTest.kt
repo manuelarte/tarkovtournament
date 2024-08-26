@@ -14,12 +14,11 @@ import kotlin.test.Test
 import kotlin.test.assertTrue
 
 class KillParserUtilsTest {
-
     @Test
     fun isKillImageImageWithKills() {
         OpenCV.loadLocally()
         val img = "./en/many-kills_en_FQXP5B.png".toResourceMat(this::class.java.classLoader, IMREAD_UNCHANGED)
-        val dest = Mat(). apply { Imgproc.cvtColor(img, this, COLOR_BGR2GRAY) }
+        val dest = Mat().apply { Imgproc.cvtColor(img, this, COLOR_BGR2GRAY) }
         Imgcodecs.imwrite("resources/output.png", dest)
     }
 
@@ -64,8 +63,8 @@ class KillParserUtilsTest {
         }
     }
 
-    @Test
     // @Ignore("Test to create the base image for no kills")
+    @Test
     fun createBaseImageNoKillsFromTest() {
         OpenCV.loadLocally()
         val img = "en/no-kills_en_TRAINING_1440x2560.png".toResourceMat(this::class.java.classLoader, IMREAD_GRAYSCALE)
@@ -75,5 +74,4 @@ class KillParserUtilsTest {
         HighGui.destroyAllWindows()
         Imgcodecs.imwrite("base-image-no-kills.png", playerKills)
     }
-
 }

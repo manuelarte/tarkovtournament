@@ -16,41 +16,42 @@ fun areImgSimilar(
     baseImage: Mat,
     img: Mat,
     minimumDistance: Double = 50.0,
-    threshold: Double = 0.1
+    threshold: Double = 0.1,
 ): Boolean {
     require(!baseImage.empty()) { "Base Image can't be empty" }
     require(!img.empty()) { "img can't be empty" }
-    check(img.channels() == 1) { "img needs to be in grayscale"}
+    check(img.channels() == 1) { "img needs to be in grayscale" }
     ORB.create().also { orb ->
-            // Detect keyPoints and compute descriptors
-            val (_, descriptorsBaseImage) =
-                Pair(MatOfKeyPoint(), Mat()).also { (keyPoints, descriptors) ->
-                    orb.detectAndCompute(baseImage, Mat(), keyPoints, descriptors)
-                }
-            val (
-                _, descriptors) =
-                Pair(MatOfKeyPoint(), Mat()).also { (keyPoints, descriptors) ->
-                    orb.detectAndCompute(img, Mat(), keyPoints, descriptors)
-                }
+        // Detect keyPoints and compute descriptors
+        val (_, descriptorsBaseImage) =
+            Pair(MatOfKeyPoint(), Mat()).also { (keyPoints, descriptors) ->
+                orb.detectAndCompute(baseImage, Mat(), keyPoints, descriptors)
+            }
+        val (
+            _, descriptors,
+        ) =
+            Pair(MatOfKeyPoint(), Mat()).also { (keyPoints, descriptors) ->
+                orb.detectAndCompute(img, Mat(), keyPoints, descriptors)
+            }
 
-            // Create a BFMatcher object with Hamming distance as measurement
-            val bfMatcher = BFMatcher.create(Core.NORM_HAMMING, false)
+        // Create a BFMatcher object with Hamming distance as measurement
+        val bfMatcher = BFMatcher.create(Core.NORM_HAMMING, false)
 
-            // Match descriptors
-            val matches: MutableList<DMatch> =
-                MatOfDMatch()
-                    .also {
-                        bfMatcher.match(descriptorsBaseImage, descriptors, it)
-                    }.toList()
-                    .also {
-                        it.sortWith { m1: DMatch, m2: DMatch ->
-                            m1.distance.toDouble().compareTo(m2.distance.toDouble())
-                        }
+        // Match descriptors
+        val matches: MutableList<DMatch> =
+            MatOfDMatch()
+                .also {
+                    bfMatcher.match(descriptorsBaseImage, descriptors, it)
+                }.toList()
+                .also {
+                    it.sortWith { m1: DMatch, m2: DMatch ->
+                        m1.distance.toDouble().compareTo(m2.distance.toDouble())
                     }
-            val goodMatches = matches.filter { it.distance > minimumDistance }
-            val similarity = goodMatches.size.toDouble() / matches.size.toDouble()
-            return similarity > threshold
-        }
+                }
+        val goodMatches = matches.filter { it.distance > minimumDistance }
+        val similarity = goodMatches.size.toDouble() / matches.size.toDouble()
+        return similarity > threshold
+    }
 }
 
 fun Mat.cropNextBack(): Mat {

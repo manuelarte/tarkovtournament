@@ -6,7 +6,6 @@ import org.opencv.imgcodecs.Imgcodecs.IMREAD_GRAYSCALE
 import kotlin.test.Test
 
 class KillScreenParserTest {
-
     @Test
     fun parseNoKillImage() {
         OpenCV.loadLocally()
@@ -16,5 +15,4 @@ class KillScreenParserTest {
         val expected = PlayerKillRaidInfo(listOf(), RaidMetadata("0.15.0.2.32197", Version.BETA, "TRAINING"))
         assertEquals(expected, actual)
     }
-
 }
