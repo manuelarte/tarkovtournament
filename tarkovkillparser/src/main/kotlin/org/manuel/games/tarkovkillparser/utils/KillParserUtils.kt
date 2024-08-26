@@ -1,6 +1,10 @@
 package org.manuel.games.tarkovkillparser.utils
 
-import org.opencv.core.*
+import org.opencv.core.Core
+import org.opencv.core.DMatch
+import org.opencv.core.Mat
+import org.opencv.core.MatOfDMatch
+import org.opencv.core.MatOfKeyPoint
 import org.opencv.features2d.BFMatcher
 import org.opencv.features2d.ORB
 import org.opencv.imgcodecs.Imgcodecs
@@ -8,9 +12,7 @@ import org.opencv.imgcodecs.Imgcodecs
 fun isKillImage(
     baseImage: Mat = Imgcodecs.imread("./src/main/resources/base-image-kill-parser.png")!!,
     img: Mat,
-): Boolean {
-    return areImgSimilar(baseImage, img, 50.0, 0.1)
-}
+): Boolean = areImgSimilar(baseImage, img, 50.0, 0.1)
 
 fun areImgSimilar(
     baseImage: Mat,

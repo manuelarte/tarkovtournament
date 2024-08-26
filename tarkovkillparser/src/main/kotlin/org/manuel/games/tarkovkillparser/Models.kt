@@ -2,11 +2,17 @@ package org.manuel.games.tarkovkillparser
 
 import kotlin.time.Duration
 
-enum class Version(val n: String) {
+enum class Version(
+    val n: String,
+) {
     BETA("Beta Version"),
 }
 
-data class RaidMetadata(val versionNumber: String, val version: Version, val raidId: String) {
+data class RaidMetadata(
+    val versionNumber: String,
+    val version: Version,
+    val raidId: String,
+) {
     companion object {
         fun from(ocrOutput: String): RaidMetadata {
             val splitted = ocrOutput.split(" | ")
@@ -27,6 +33,17 @@ data class RaidMetadata(val versionNumber: String, val version: Version, val rai
     }
 }
 
-data class PlayerKill(val number: Int, val location: String, val time: Duration?, val player: String?, val level: Int?, val faction: String?, val distance: Double?)
+data class PlayerKill(
+    val number: Int,
+    val location: String,
+    val time: Duration?,
+    val player: String?,
+    val level: Int?,
+    val faction: String?,
+    val distance: Double?,
+)
 
-data class PlayerKillRaidInfo(private val kills: Collection<PlayerKill>, val metadata: RaidMetadata)
+data class PlayerKillRaidInfo(
+    private val kills: Collection<PlayerKill>,
+    val metadata: RaidMetadata,
+)

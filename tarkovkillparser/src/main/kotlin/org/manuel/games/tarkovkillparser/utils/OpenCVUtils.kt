@@ -52,7 +52,7 @@ fun Mat.toBufferedImage(): BufferedImage {
     val matOfByte = MatOfByte()
     Imgcodecs.imencode(".jpg", this, matOfByte)
     val byteArray = matOfByte.toArray()
-    val `in`: InputStream = ByteArrayInputStream(byteArray)
-    val bufImage = ImageIO.read(`in`)
+    val inputStream: InputStream = ByteArrayInputStream(byteArray)
+    val bufImage = ImageIO.read(inputStream)
     return bufImage
 }
