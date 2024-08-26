@@ -2,7 +2,6 @@ package org.manuel.games.tarkovkillparser
 
 import nu.pattern.OpenCV
 import org.opencv.core.Mat
-import org.opencv.core.MatOfByte
 import org.opencv.imgcodecs.Imgcodecs
 import org.opencv.imgcodecs.Imgcodecs.IMREAD_UNCHANGED
 import org.opencv.imgproc.Imgproc
@@ -14,12 +13,7 @@ class MainKtTest {
     @Test
     fun testIsKillImage() {
         OpenCV.loadLocally()
-        val bytes =
-            this::class.java.classLoader
-                .getResource("many-kills-en.png")!!
-                .readBytes()
-        val img =
-            Imgcodecs.imdecode(MatOfByte(*bytes), IMREAD_UNCHANGED)
+        val img = "many-kills_en.png".toResourceMat(this::class.java.classLoader, IMREAD_UNCHANGED)
         val dest = Mat()
         Imgproc.cvtColor(img, dest, COLOR_BGR2GRAY)
         Imgcodecs.imwrite("resources/output.png", dest)
@@ -28,12 +22,16 @@ class MainKtTest {
     @Test
     fun isKillImageItIs() {
         OpenCV.loadLocally()
-        val bytes =
-            this::class.java.classLoader
-                .getResource("many-kills-2-en.png")!!
-                .readBytes()
-        val img =
-            Imgcodecs.imdecode(MatOfByte(*bytes), IMREAD_UNCHANGED)
-        assertTrue { isKillImage(img) }
+        val img = "many-kills-2_en.png".toResourceMat(this::class.java.classLoader, IMREAD_UNCHANGED)
+        val baseKillImage = Imgcodecs.imread("./src/main/resources/base-image-kill-parser.png")!!
+        assertTrue { isKillImage(baseKillImage, img) }
+    }
+
+    @Test
+    fun isKillImageItNoKills() {
+        OpenCV.loadLocally()
+        val img = "no-kills_en_1440x2560.png".toResourceMat(this::class.java.classLoader, IMREAD_UNCHANGED)
+        val baseKillImage = Imgcodecs.imread("./src/main/resources/base-image-kill-parser.png")!!
+        assertTrue { isKillImage(baseKillImage, img) }
     }
 }
